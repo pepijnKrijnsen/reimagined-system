@@ -1,3 +1,4 @@
+from logging import currentframe
 import unittest
 
 class Money:
@@ -13,6 +14,18 @@ class Money:
 
     def divide(self, divisor):
         return Money(self.amount / divisor, self.currency)
+
+
+class Portfolio:
+    def __init__(self):
+        self.sum = 0
+
+    def add(self, *moneys):
+        for money in moneys:
+            self.sum += money.amount
+
+    def evaluate(self, currency):
+        return Money(self.sum, currency)
 
 
 class TestMoney(unittest.TestCase):
@@ -32,6 +45,14 @@ class TestMoney(unittest.TestCase):
         expected_money_after_division = Money(1000.5, "KRW")
         self.assertEqual(actual_money_after_division,
                          expected_money_after_division)
+
+    def testAddition(self):
+        fiveDollars = Money(5, "USD")
+        tenDollars = Money(10, "USD")
+        fifteenDollars = Money(15, "USD")
+        portfolio = Portfolio()
+        portfolio.add(fiveDollars, tenDollars)
+        self.assertEqual(fifteenDollars, portfolio.evaluate("USD"))
 
 
 if __name__ == "__main__":

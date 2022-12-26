@@ -1,40 +1,10 @@
-from logging import currentframe
 import unittest
 
-class Money:
-    def __init__(self, amount, currency):
-        self.amount = amount
-        self.currency = currency
-
-    def __eq__(self, other):
-        return self.amount == other.amount and self.currency == other.currency
-
-    def times(self, multiplier):
-        return Money(self.amount * multiplier, self.currency)
-
-    def divide(self, divisor):
-        return Money(self.amount / divisor, self.currency)
-
-
-class Portfolio:
-    def __init__(self):
-        self.sum = 0
-
-    def add(self, *moneys):
-        for money in moneys:
-            self.sum += money.amount
-
-    def evaluate(self, currency):
-        return Money(self.sum, currency)
-
+from money import Money
+from portfolio import Portfolio
 
 class TestMoney(unittest.TestCase):
-    def testMultiplicationInDollar(self):
-        fiveDollars = Money(5, "USD")
-        tenDollars = Money(10, "USD")
-        self.assertEqual(fiveDollars.times(2), tenDollars)
-
-    def testMultiplicationInEuro(self):
+    def testMultiplication(self):
         tenEuros = Money(10, "EUR")
         twentyEuros = Money(20, "EUR")
         self.assertEqual(tenEuros.times(2), twentyEuros)

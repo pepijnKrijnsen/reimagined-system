@@ -52,6 +52,17 @@ class MoneyTest {
     assert.deepStrictEqual(portfolio.evaluate("KRW"), expectedValue)
   }
 
+  testUsefulErrorIfExchangeRateDoesNotExist() {
+    let oneDollar = new Money(1, "USD");
+    let oneEuro = new Money(1, "EUR");
+    let oneWon = new Money(1, "KRW");
+    let portfolio = new Portfolio();
+    portfolio.add(oneDollar, oneEuro, oneWon);
+    let expectedError = new Error(
+      "Missing exchange rate(s): [USD->kalganid,EUR->kalganid,KRW->kalganid]");
+    assert.throws(function() {portfolio.evaluate("kalganid")}, expectedError);
+  }
+
   runAllTests() {
     let testMethods = this.getAllTestMethods();
     testMethods.forEach(m => {
